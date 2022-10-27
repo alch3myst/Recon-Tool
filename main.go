@@ -17,7 +17,7 @@ func main() {
 
 	// Mode flag
 	var mode string
-	flag.StringVar(&mode, "m", "init", "Select the mode to run")
+	flag.StringVar(&mode, "m", "", "Select the mode to run")
 
 	// Set if page is http
 	var isHttp bool
@@ -26,9 +26,11 @@ func main() {
 	// Parse flags
 	flag.Parse()
 
+	recon.UiBanner()
+
 	// If has no  target print the help message
 	if target == "" {
-		println("Help")
+		recon.UiHelp()
 		return
 	}
 
@@ -39,7 +41,7 @@ func main() {
 	case "recon":
 		Recon(fullUrl, simpleUrl)
 	default:
-		print("Help")
+		recon.UiHelp()
 	}
 }
 

@@ -12,6 +12,7 @@ func SetupTarget(fullUrl string, simpleURL string) {
 	// Main folder
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
+		println("\nCreating folder structure at " + path)
 		os.Mkdir(path, 0777)
 	}
 

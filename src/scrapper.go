@@ -11,20 +11,28 @@ import (
 )
 
 func Scrapper(fullUrl string, simpleUrl string) {
+	println("\nStarting Scrapper")
 	// Href, src ping stuff that has some kind of link/content to see
+	println("Searching for links and sources...")
 	results := RegexFile(`(href|src|ping)="[a-zA-Z/0-9.:?=\-&;%_,]*.`, simpleUrl+"/Target.html")
 	WriteRegexToFile(results, simpleUrl+"/Scraps/href_src.txt", false)
 
+	println("Searching for js links on page source...")
 	results = RegexFile(`[\S]*\.js"`, simpleUrl+"/Target.html")
 	WriteRegexToFile(results, simpleUrl+"/Scraps/anyJS.txt", false)
 
+	println("Searching for any link on page source...")
 	results = RegexFile(`(http|https)://[\S]*('|")`, simpleUrl+"/Target.html")
 	WriteRegexToFile(results, simpleUrl+"/Scraps/links.txt", true)
+
+	println("Target source scrapped.\n")
 }
 
 // , wg *sync.WaitGroup
 func DownloadJS(fullUrl string, simpleUrl string) {
 	path := strings.ReplaceAll(simpleUrl, ":", "")
+
+	println("\nDownloading scripts found (from src in anyJS.txt)")
 
 	// Open the js file list
 	jsList, _ := os.Open(path + "/Scraps/anyJS.txt")
@@ -68,6 +76,8 @@ func DownloadJS(fullUrl string, simpleUrl string) {
 	}
 
 	list = nil
+
+	println("Download finished.")
 }
 
 func reverse(s string) string {
@@ -86,6 +96,7 @@ func GetPage(fullUrl string, simpleURL string) {
 		return
 	}
 
+	println("Getting the target page...")
 	// Create the headless browser instance
 	headlessBrowser := rod.New().MustConnect()
 
@@ -94,6 +105,7 @@ func GetPage(fullUrl string, simpleURL string) {
 
 	// Print the page
 	// this awaits for the page js to load
+	println("Taking a page screenshot...")
 	page.MustWaitLoad().MustScreenshot(path + "/Screenshot.png")
 
 	// Get the source code after the js compile
