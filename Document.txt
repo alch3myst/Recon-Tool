@@ -1,0 +1,24 @@
+Find src and hrefs
+All
+(href|src|ping)="[a-zA-Z/0-9.:?=\-&;%_]*.
+
+Dirty url finder
+(http|https)://[\S]*
+
+Ultra dirty path like finder
+/[\S]*
+
+
+
+// General idea
+create a folder for each target
+each folder has a target.info file with
+- ip address, robots.txt, no-script tag etc...
+
+
+// Flow page scrapper
+load the url with headless browser
+store the content in a file
+
+get robots.txt
+download js scripts
